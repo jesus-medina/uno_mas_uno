@@ -5,10 +5,10 @@ import 'package:uno_mas_uno/presentation/ui/pages/people_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(UnoMasUnoApp());
 }
 
-class MyApp extends StatelessWidget {
+class UnoMasUnoApp extends StatelessWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
