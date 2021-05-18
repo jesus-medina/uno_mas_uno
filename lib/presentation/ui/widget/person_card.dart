@@ -28,9 +28,16 @@ class PersonCard extends StatelessWidget {
           PersonUI spiritualGuide =
               PersonUI.fromDataPerson(spiritualGuideDataPerson);
 
+          var personGenderColor = _personUI.gender.genderColorWith(context);
+          var spiritualGuideGenderColor =
+              spiritualGuide.gender.genderColorWith(context);
+
           return Slidable(
             child: ExpansionTile(
-              leading: CircleAvatar(child: Text(_personUI.acronym)),
+              leading: CircleAvatar(
+                child: Text(_personUI.acronym),
+                backgroundColor: personGenderColor,
+              ),
               title: Text(_personUI.fullName),
               subtitle: Text(_personUI.birthday),
               children: [
@@ -50,7 +57,7 @@ class PersonCard extends StatelessWidget {
             actionPane: SlidableDrawerActionPane(),
             actions: [
               ListTile(
-                tileColor: Theme.of(context).primaryColor,
+                tileColor: spiritualGuideGenderColor,
                 title: Text(
                   spiritualGuide.firstName,
                   style:
@@ -66,4 +73,10 @@ class PersonCard extends StatelessWidget {
           );
         });
   }
+}
+
+extension on PersonGenderUI {
+  Color genderColorWith(BuildContext context) => this == PersonGenderUI.Male
+      ? Theme.of(context).primaryColor
+      : Theme.of(context).accentColor;
 }

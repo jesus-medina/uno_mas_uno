@@ -25,9 +25,12 @@ class UnoMasUnoApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: '1MAS1',
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              brightness: Brightness.light,
+              primaryColor: Colors.blue[500],
+              accentColor: Colors.pinkAccent[200],
+              fontFamily: 'Roboto',
             ),
             home: MainPage(),
           );
