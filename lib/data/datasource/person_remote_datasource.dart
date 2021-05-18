@@ -18,4 +18,11 @@ class PersonRemoteDataSource {
     var personDoc = await _firestore.collection('people').doc(personId).get();
     return DataPerson.fromMap(personDoc.data());
   }
+
+  Future<DocumentSnapshot<dynamic>> addPerson(DataPerson dataPerson) async {
+    var dataPersonMap = dataPerson.toMap();
+    var documentRef = await _firestore.collection('people').add(dataPersonMap);
+
+    return documentRef.get();
+  }
 }

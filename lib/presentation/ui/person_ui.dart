@@ -37,8 +37,20 @@ class PersonUI {
     final birthday = dataPerson.birthday;
     final spiritualGuideId = dataPerson.spiritualGuideId;
 
-    return PersonUI(firstName, lastName, gender, personContact, birthday, spiritualGuideId: spiritualGuideId);
+    return PersonUI(firstName, lastName, gender, personContact, birthday,
+        spiritualGuideId: spiritualGuideId);
   }
+
+  Map<String, dynamic> toMap() => {
+        'first name': firstName,
+        'last name': lastName,
+        'gender': gender == PersonGenderUI.Male ? 'male' : 'female',
+        'email': personContact.email,
+        'phone number': personContact.phoneNumber,
+        'address': personContact.address,
+        'birthday': birthday,
+        'spiritual guide id': spiritualGuideId,
+      };
 }
 
 enum PersonGenderUI { Male, Female, NonSpecified }

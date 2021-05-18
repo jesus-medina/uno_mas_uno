@@ -25,8 +25,7 @@ class AddPersonDialogState extends State<AddPersonDialog> {
           TextButton(
               onPressed: () {
                 if (_personGlobalKey.currentState.validate()) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                  _personGlobalKey.currentState.save();
                 }
               },
               child: Text('AGREGAR',
@@ -42,10 +41,27 @@ class AddPersonDialogState extends State<AddPersonDialog> {
           if (snapshot.hasError || !snapshot.hasData) {
             return Text('');
           }
-          List<PersonUI> people = snapshot.data.map((dataPerson) => PersonUI.fromDataPerson(dataPerson)).toList();
-          return PersonForm(_personGlobalKey, people);
+          List<PersonUI> people = snapshot.data
+              .map((dataPerson) => PersonUI.fromDataPerson(dataPerson))
+              .toList();
+
+          return PersonForm(_personGlobalKey, people, this.onPersonSaved);
         },
       ),
     );
+  }
+
+  onPersonSaved(PersonUI personUI) async {
+    var personUIMap = personUI.toMap();
+    var dataPerson = DataPerson.fromMap(personUIMap);
+    var personDocSnapshot = await _personRemoteDataSource.addPerson(dataPerson);
+    if (personDocSnapshot.exists) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Hemos sumado uno más!')));
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Parece que no hemos podido agregar la persona')));
+    }
   }
 }
