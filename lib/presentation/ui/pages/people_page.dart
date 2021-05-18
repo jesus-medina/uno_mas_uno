@@ -19,8 +19,13 @@ class PeoplePage extends StatelessWidget {
               return Text('');
             }
             List<DataPerson> dataPeople = snapshot.data;
+
             return ListView.separated(
-                itemBuilder: (_, index) => PersonCard(PersonUI.fromDataPerson(dataPeople[index])),
+                itemBuilder: (_, index) {
+                  PersonUI personUI = PersonUI.fromDataPerson(dataPeople[index]);
+
+                  return PersonCard(personUI);
+                },
                 separatorBuilder: (_, index) => Divider(),
                 itemCount: dataPeople.length);
           },

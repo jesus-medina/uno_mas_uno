@@ -1,19 +1,21 @@
 import 'package:uno_mas_uno/data/person_data.dart';
 
 class PersonUI {
-  final String _firstName;
-  final String _lastName;
+  final String firstName;
+  final String lastName;
   final PersonGenderUI gender;
   final PersonContactUI personContact;
   final String birthday;
+  final String spiritualGuideId;
 
-  PersonUI(this._firstName, this._lastName, this.gender, this.personContact,
-      this.birthday);
+  PersonUI(this.firstName, this.lastName, this.gender, this.personContact,
+      this.birthday,
+      {this.spiritualGuideId});
 
-  String get fullName => "$_firstName $_lastName";
+  String get fullName => "$firstName $lastName";
 
   String get acronym =>
-      "${_firstName.substring(0, 1)}${_lastName.substring(0, 1)}";
+      "${firstName.substring(0, 1)}${lastName.substring(0, 1)}";
 
   factory PersonUI.fromDataPerson(DataPerson dataPerson) {
     final firstName = dataPerson.firstName;
@@ -23,7 +25,7 @@ class PersonUI {
       case 'male':
         gender = PersonGenderUI.Male;
         break;
-      case 'famale':
+      case 'female':
         gender = PersonGenderUI.Female;
         break;
     }
@@ -33,8 +35,9 @@ class PersonUI {
     final PersonContactUI personContact =
         PersonContactUI(email, phoneNumber, address);
     final birthday = dataPerson.birthday;
+    final spiritualGuideId = dataPerson.spiritualGuideId;
 
-    return PersonUI(firstName, lastName, gender, personContact, birthday);
+    return PersonUI(firstName, lastName, gender, personContact, birthday, spiritualGuideId: spiritualGuideId);
   }
 }
 
