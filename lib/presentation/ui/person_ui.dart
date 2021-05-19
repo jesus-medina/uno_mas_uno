@@ -1,6 +1,7 @@
 import 'package:uno_mas_uno/data/person_data.dart';
 
 class PersonUI {
+  final String id;
   final String firstName;
   final String lastName;
   final PersonGenderUI gender;
@@ -8,8 +9,8 @@ class PersonUI {
   final String birthday;
   final String spiritualGuideId;
 
-  PersonUI(this.firstName, this.lastName, this.gender, this.personContact,
-      this.birthday,
+  PersonUI(this.id, this.firstName, this.lastName, this.gender,
+      this.personContact, this.birthday,
       {this.spiritualGuideId});
 
   String get fullName => "$firstName $lastName";
@@ -18,6 +19,7 @@ class PersonUI {
       "${firstName.substring(0, 1)}${lastName.substring(0, 1)}";
 
   factory PersonUI.fromDataPerson(DataPerson dataPerson) {
+    final id = dataPerson.id;
     final firstName = dataPerson.firstName;
     final lastName = dataPerson.lastName;
     PersonGenderUI gender = PersonGenderUI.NonSpecified;
@@ -37,7 +39,7 @@ class PersonUI {
     final birthday = dataPerson.birthday;
     final spiritualGuideId = dataPerson.spiritualGuideId;
 
-    return PersonUI(firstName, lastName, gender, personContact, birthday,
+    return PersonUI(id, firstName, lastName, gender, personContact, birthday,
         spiritualGuideId: spiritualGuideId);
   }
 
@@ -51,6 +53,9 @@ class PersonUI {
         'birthday': birthday,
         'spiritual guide id': spiritualGuideId,
       };
+
+  @override
+  String toString() => fullName;
 }
 
 enum PersonGenderUI { Male, Female, NonSpecified }

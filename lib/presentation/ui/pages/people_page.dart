@@ -22,9 +22,10 @@ class PeoplePage extends StatelessWidget {
 
             return ListView.separated(
                 itemBuilder: (_, index) {
-                  PersonUI personUI = PersonUI.fromDataPerson(dataPeople[index]);
+                  PersonUI personUI =
+                      PersonUI.fromDataPerson(dataPeople[index]);
 
-                  return PersonCard(personUI);
+                  return PersonCard(personUI, _onHidePerson);
                 },
                 separatorBuilder: (_, index) => Divider(),
                 itemCount: dataPeople.length);
@@ -39,4 +40,35 @@ class PeoplePage extends StatelessWidget {
           child: const Icon(Icons.group_add),
         ),
       );
+
+  _onHidePerson(BuildContext context, PersonUI personUI) async {
+    _showHidePersonDialog(context, personUI);
+  }
+
+  _showHidePersonDialog(BuildContext context, PersonUI personUI) {
+    final AlertDialog dialog = AlertDialog(
+      title: Text('Ya no quieres ver esta Persona?'),
+      content: Text(
+          'Ya no verás a la persona en la lista y no podrá ser utilizada como Guía Espiritual'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            'DEJAR EN LA LISTA',
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            _personRemoteDataSource
+                .hidePersonById(personUI.id);
+          },
+          child: Text('OCULTAR',
+              style: TextStyle(color: Theme.of(context).accentColor)),
+        ),
+      ],
+    );
+    showDialog<void>(context: context, builder: (context) => dialog);
+  }
 }

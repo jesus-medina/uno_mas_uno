@@ -53,7 +53,7 @@ class AddPersonDialogState extends State<AddPersonDialog> {
 
   onPersonSaved(PersonUI personUI) async {
     var personUIMap = personUI.toMap();
-    var dataPerson = DataPerson.fromMap(personUIMap);
+    var dataPerson = DataPerson.fromMap(personUI.id, personUIMap);
     var personDocSnapshot = await _personRemoteDataSource.addPerson(dataPerson);
     if (personDocSnapshot.exists) {
       ScaffoldMessenger.of(context)

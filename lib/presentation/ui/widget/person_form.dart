@@ -34,7 +34,7 @@ class PersonFormState extends State<PersonForm> {
   String _email = '';
   String _address = '';
 
-  bool _isSaving = false;
+  bool _shouldSave = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,30 +59,32 @@ class PersonFormState extends State<PersonForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  FormField(
-                    builder: (state) {
-                      return Autocomplete<String>(
-                        optionsBuilder: (TextEditingValue textEditingValue) {
-                          if (textEditingValue.text == '') {
-                            return const Iterable<String>.empty();
-                          }
-                          return _people
-                              .where((PersonUI option) {
-                                return option.fullName.toLowerCase().contains(
-                                    textEditingValue.text.toLowerCase());
-                              })
-                              .map((e) => e.fullName)
-                              .toList();
-                        },
-                        onSelected: (String selection) {
-                          state.didChange(selection.toLowerCase());
-                        },
-                      );
-                    },
-                    onSaved: (value) {
-                      _isSaving = true;
+                  FormField<PersonUI>(
+                    enabled: _hasSpiritualGuide,
+                    builder: (state) => !_hasSpiritualGuide
+                        ? TextFormField(enabled: false)
+                        : Autocomplete<PersonUI>(
+                            optionsBuilder:
+                                (TextEditingValue textEditingValue) {
+                              if (textEditingValue.text == '') {
+                                return const Iterable<PersonUI>.empty();
+                              }
+                              return _people
+                                  .where((PersonUI option) {
+                                    return option.fullName
+                                        .toLowerCase()
+                                        .contains(textEditingValue.text
+                                            .toLowerCase());
+                                  })
+                                  .toList();
+                            },
+                            onSelected: (PersonUI selection) {
+                              state.didChange(selection);
+                            },
+                          ),
+                    onSaved: (PersonUI personUI) {
                       setState(() {
-                        _spiritualGuideId = value;
+                        _spiritualGuideId = personUI.id;
                       });
                     },
                   ),
@@ -190,7 +192,7 @@ class PersonFormState extends State<PersonForm> {
                       return null;
                     },
                     onSaved: (value) {
-                      _isSaving = false;
+                      _shouldSave = true;
                       setState(() {
                         _address = value;
                       });
@@ -206,7 +208,7 @@ class PersonFormState extends State<PersonForm> {
   @override
   void setState(VoidCallback fn) {
     super.setState(fn);
-    if (!_isSaving) {
+    if (_shouldSave) {
       var firstName = _firstName;
       var lastName = _lastName;
       var gender = _personGenderUIFrom(_gender);
@@ -218,10 +220,11 @@ class PersonFormState extends State<PersonForm> {
       var spiritualGuideId = _spiritualGuideId;
 
       var personUI = PersonUI(
-          firstName, lastName, gender, personContact, birthday,
+          'aaa', firstName, lastName, gender, personContact, birthday,
           spiritualGuideId: spiritualGuideId);
       _onPersonSaved(personUI);
     }
+    _shouldSave = false;
   }
 
   _personGenderUIFrom(String gender) =>
