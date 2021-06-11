@@ -61,8 +61,7 @@ class PeoplePage extends StatelessWidget {
         TextButton(
           onPressed: () {
             Navigator.pop(context);
-            _personRemoteDataSource
-                .hidePersonById(personUI.id);
+            _personRemoteDataSource.hidePersonById(personUI.id);
           },
           child: Text('OCULTAR',
               style: TextStyle(color: Theme.of(context).accentColor)),

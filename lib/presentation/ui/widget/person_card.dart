@@ -67,7 +67,10 @@ class PersonCard extends StatelessWidget {
     return Slidable(
       child: ExpansionTile(
         leading: CircleAvatar(
-          child: Text(_personUI.acronym),
+          child: Text(
+            _personUI.acronym,
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: personGenderColor,
         ),
         title: Text(_personUI.fullName),
